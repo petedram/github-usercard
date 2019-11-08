@@ -97,12 +97,27 @@ return card;
 
 const cardObject = document.querySelector('.cards');
 
-
+// return Pete
 axiosPromise.then(response => {
   cardObject.appendChild(createCard(response.data));
   console.log(response.data);
 });
 
+
+// stretch - return followers
+let axiosPromiseFollowers = axios.get("https://api.github.com/users/petedram/followers");
+axiosPromiseFollowers.then(response => {
+  const programicFollowers = response.data;
+
+  programicFollowers.forEach(item => {
+    let axiosPromise = axios.get("https://api.github.com/users/" + item.login);
+    axiosPromise.then(response => {
+    cardObject.appendChild(createCard(response.data));
+    });
+  })
+});
+
+// return list of followers
 followersArray.forEach(item => {
   let axiosPromise = axios.get("https://api.github.com/users/" + item);
   axiosPromise.then(response => {
